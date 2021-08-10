@@ -3,13 +3,13 @@ title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
-  - python
-  - javascript
+  # - ruby
+  # - python
+  # - javascript
 
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+# toc_footers:
+#   - <a href='#'>Sign Up for a Developer Key</a>
+#   - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
 
 includes:
   - errors
@@ -21,133 +21,134 @@ code_clipboard: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the EnayaPay API! You can use our API to access Payment API endpoints, which can get information on various transactions, making a payment to various providers like card transfer,telecom services and electricity.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in Shell, Rest Api! You can view code examples in the dark area to the right.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
 
 # Authentication
 
 > To authorize, use this code:
 
-```ruby
-require 'kittn'
+<!-- ```ruby
+require 'Enaya'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+api = Enaya::APIClient.authorize!('meowmeowmeow')
 ```
 
 ```python
-import kittn
+import Enaya
 
-api = kittn.authorize('meowmeowmeow')
-```
+api = Enaya.authorize('f5db97dc-de22-4a4b-bc22-c8725e5f69e4')
+``` -->
 
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
+  -H "x-api-key: f5db97dc-de22-4a4b-bc22-c8725e5f69e4"
 ```
-
+<!-- 
 ```javascript
-const kittn = require('kittn');
+const Enaya = require('Enaya');
 
-let api = kittn.authorize('meowmeowmeow');
-```
+let api = Enaya.authorize('f5db97dc-de22-4a4b-bc22-c8725e5f69e4');
+``` -->
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `f5db97dc-de22-4a4b-bc22-c8725e5f69e4` with your API key. just this is sample api key. contact your account manager to give you the api key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Enaya uses API keys to allow access to the API. You can register a new Enaya API key at our [developer portal](http://enayapay.com/).
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Enaya expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+`x-api-key: f5db97dc-de22-4a4b-bc22-c8725e5f69e4`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>f5db97dc-de22-4a4b-bc22-c8725e5f69e4</code> with your personal API key.
 </aside>
 
-# Kittens
+# Transfer
 
-## Get All Kittens
+## Transfer from card to another
 
+<!-- 
 ```ruby
-require 'kittn'
+require 'Enaya'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+api = Enaya::APIClient.authorize!('meowmeowmeow')
 api.kittens.get
 ```
 
 ```python
-import kittn
+import Enaya
 
-api = kittn.authorize('meowmeowmeow')
+api = Enaya.authorize('meowmeowmeow')
 api.kittens.get()
-```
+``` -->
 
 ```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
+ curl -d '{
+	"amount":455,
+	"from_card":"4342423432423425",
+	"to_card":"5525 5555 5555 5555",
+	"expiration_date":"0921",
+	"ipin":"errwqrweradwdsDSDSDDSDsadAS",
+	"uuid":"rt55fgfgdssdggdfgdsdsgd"
+}' -H "Content-Type: application/json"  -X POST https://sandbox.platform.enayapay.com/api/v2.2/transfer/ 
 ```
 
-```javascript
-const kittn = require('kittn');
+<!-- ```javascript
+const Enaya = require('Enaya');
 
-let api = kittn.authorize('meowmeowmeow');
+let api = Enaya.authorize('meowmeowmeow');
 let kittens = api.kittens.get();
-```
+``` -->
 
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+	"from_card": "************3425",
+	"to_card": "***************5555",
+	"amount": 455.0,
+	"response_status": "Successful",
+	"enaya_fee": 0.05
+} 
 ```
 
-This endpoint retrieves all kittens.
+This endpoint transfers amount from card to another.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST https://sandbox.platform.enayapay.com/api/v2.2/transfer`
 
 ### Query Parameters
 
 Parameter | Default | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+amount | double | Amount to be transfered.
+from_card | string | card to pay with.
+to_card | string | card to be transfer the amount to or card that recieve the amount.
+expiration_date | string | expiration date of the from card, and it should be in format 0921 or mmyy.
+ipin | string | ipin of the card to be pay with and it should be send ecnrypted.
+uuid | string | uuid string ti be unique for each transaction.
 
-<aside class="success">
+<!-- <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
-</aside>
-
+</aside> -->
+<!-- 
 ## Get a Specific Kitten
 
 ```ruby
-require 'kittn'
+require 'Enaya'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+api = Enaya::APIClient.authorize!('meowmeowmeow')
 api.kittens.get(2)
 ```
 
 ```python
-import kittn
+import Enaya
 
-api = kittn.authorize('meowmeowmeow')
+api = Enaya.authorize('meowmeowmeow')
 api.kittens.get(2)
 ```
 
@@ -157,9 +158,9 @@ curl "http://example.com/api/kittens/2" \
 ```
 
 ```javascript
-const kittn = require('kittn');
+const Enaya = require('Enaya');
 
-let api = kittn.authorize('meowmeowmeow');
+let api = Enaya.authorize('meowmeowmeow');
 let max = api.kittens.get(2);
 ```
 
@@ -192,16 +193,16 @@ ID | The ID of the kitten to retrieve
 ## Delete a Specific Kitten
 
 ```ruby
-require 'kittn'
+require 'Enaya'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+api = Enaya::APIClient.authorize!('meowmeowmeow')
 api.kittens.delete(2)
 ```
 
 ```python
-import kittn
+import Enaya
 
-api = kittn.authorize('meowmeowmeow')
+api = Enaya.authorize('meowmeowmeow')
 api.kittens.delete(2)
 ```
 
@@ -212,9 +213,9 @@ curl "http://example.com/api/kittens/2" \
 ```
 
 ```javascript
-const kittn = require('kittn');
+const Enaya = require('Enaya');
 
-let api = kittn.authorize('meowmeowmeow');
+let api = Enaya.authorize('meowmeowmeow');
 let max = api.kittens.delete(2);
 ```
 
@@ -238,4 +239,9 @@ This endpoint deletes a specific kitten.
 Parameter | Description
 --------- | -----------
 ID | The ID of the kitten to delete
+
+
+
+
+---------------- -->
 
