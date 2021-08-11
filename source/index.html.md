@@ -91,6 +91,7 @@ api.kittens.get()
 	"from_card":"4342423432423425",
 	"to_card":"5525 5555 5555 5555",
 	"expiration_date":"0921",
+  "phone_number":"249xxxxxxxxxx "
 	"ipin":"errwqrweradwdsDSDSDDSDsadAS",
 	"uuid":"rt55fgfgdssdggdfgdsdsgd"
 }' -H "Content-Type: application/json"  -X POST https://sandbox.platform.enayapay.com/api/v2.2/transfer/ 
@@ -128,6 +129,7 @@ Parameter | Default | Description
 amount | double | Amount to be transfered.
 from_card | string | card to pay with.
 to_card | string | card to be transfer the amount to or card that recieve the amount.
+phone_number | phone number of customer in format with country key 249xxxxxxxxxx 
 expiration_date | string | expiration date of the from card, and it should be in format 0921 or mmyy.
 ipin | string | ipin of the card to be pay with and it should be send ecnrypted.
 uuid | string | uuid string ti be unique for each transaction.
